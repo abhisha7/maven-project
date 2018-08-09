@@ -21,7 +21,7 @@
           }
           stage ('Deplo to staging'){
               steps {
-                  build job: 'deply to staging'
+                  build job: 'deploy to staging'
               }    
           }
       }
