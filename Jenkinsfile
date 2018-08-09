@@ -4,7 +4,7 @@
 
 
       tools {
-          maven 'LocalMAVEN'
+          maven 'localMaven'
       }
           
   stages{
@@ -18,6 +18,11 @@
                       archiveArtifacts artifacts: '**/target/*.war'
                   }
               }
+          }
+          stage ('Deplo to staging'){
+              steps {
+                  build job: 'deply to staging'
+              }    
           }
       }
   }
