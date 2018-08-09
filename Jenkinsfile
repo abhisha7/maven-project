@@ -4,7 +4,7 @@
 
 
       tools {
-          maven 'localMaven'
+          maven 'LocalMAVEN'
       }
           
   stages{
