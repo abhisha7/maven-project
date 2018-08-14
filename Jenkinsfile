@@ -6,7 +6,7 @@ pipeline {
       }
 
     parameters {
-        string(name: 'stage', defaultValue: '18.206.157.183', description: 'stage server')
+        string(name: 'stage', defaultValue: '18.212.74.205', description: 'stage server')
         string(name: 'prod', defaultValue: '18.206.157.183', description: 'prod server')
     }
 
