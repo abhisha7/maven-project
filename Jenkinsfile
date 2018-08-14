@@ -1,28 +1,43 @@
+pipeline {
+    agent any
 
-  pipeline {
-      agent any
+    parameters {
+        string(name: 'stage', defaultValue: '18.206.157.183', description: 'stage server')
+        string(name: 'prod', defaultValue: '18.206.157.183', description: 'prod server')
+    }
 
+    triggers {
+        pollSCM('* * * * *')
+    }
 
-      tools {
-          maven 'LocalMAVEN'
-      }
-          
-  stages{
-          stage('Build'){
-              steps {
-                  sh 'mvn clean package'
-              }
-              post {
-                  success {
-                      echo 'Now Archiving...'
-                      archiveArtifacts artifacts: '**/target/*.war'
-                  }
-              }
-          }
-          stage ('Deplo to staging'){
-              steps {
-                  build job: 'deploy to staging'
-              }    
-          }
-      }
-  }
+stages {
+    stage('build'){
+        steps{
+            sh 'mvn clean install'
+        }
+        post {
+            success {
+                echo 'Now Archiving'
+                archiveArtifacts artifacts: '**/target/*.war'
+            }
+        }
+    }
+
+    stage('deployment'){
+        parellel{
+            stage ('stage'){
+                steps{
+                    sh "scp -i /home/ec2-user/key.pem **/target/*.war ec2-user@${params.stage}:/var/lib/tomcat/webapps"
+                }
+            }
+            stage ('prod'){
+                steps {
+                    sh "scp -i /home/ec2-user/key.pem **/target/*.war ec2-user@${params.prod}:/var/lib/tomcat/webapps"
+                }
+            }
+        }
+    }
+  }  
+
+}
+
