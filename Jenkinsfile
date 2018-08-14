@@ -11,7 +11,7 @@ pipeline {
     }
 
 stages {
-    stage('build'){
+    stage ('build'){
         steps{
             sh 'mvn clean install'
         }
@@ -23,10 +23,10 @@ stages {
         }
     }
 
-    stage('deployment'){
+    stage ('deployment'){
         parellel{
             stage ('stage'){
-                steps{
+                steps {
                     sh "scp -i /home/ec2-user/key.pem **/target/*.war ec2-user@${params.stage}:/var/lib/tomcat/webapps"
                 }
             }
@@ -37,7 +37,5 @@ stages {
             }
         }
     }
-  }  
-
 }
 
