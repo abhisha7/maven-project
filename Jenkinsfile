@@ -11,28 +11,29 @@ pipeline {
     }
 
 stages {
-    stage ('build'){
-        steps{
-            sh 'mvn clean install'
-        }
-        post {
-            success {
-                echo 'Now Archiving'
-                archiveArtifacts artifacts: '**/target/*.war'
+        stage ('build'){
+            steps{
+                sh 'mvn clean install'
             }
-        }
-    }
-
-    stage ('deployment'){
-        parellel{
-            stage ('stage'){
-                steps {
-                    sh "scp -i /home/ec2-user/key.pem **/target/*.war ec2-user@${params.stage}:/var/lib/tomcat/webapps"
+            post {
+                success {
+                    echo 'Now Archiving'
+                    archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
-            stage ('prod'){
-                steps {
-                    sh "scp -i /home/ec2-user/key.pem **/target/*.war ec2-user@${params.prod}:/var/lib/tomcat/webapps"
+        }
+
+        stage ('deployment'){
+            parellel{
+                stage ('stage'){
+                    steps {
+                        sh "scp -i /home/ec2-user/key.pem **/target/*.war ec2-user@${params.stage}:/var/lib/tomcat/webapps"
+                    }
+                }
+                stage ('prod'){
+                    steps {
+                        sh "scp -i /home/ec2-user/key.pem **/target/*.war ec2-user@${params.prod}:/var/lib/tomcat/webapps"
+                    }
                 }
             }
         }
