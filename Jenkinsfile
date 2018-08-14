@@ -31,7 +31,7 @@ stages {
             parallel{
                 stage ('stage'){
                     steps {
-                        sh "scp -i /home/ec2-user/git-project/maven-project/key.pem **/target/*.war ec2-user@${params.stage}:/var/lib/tomcat/webapps"
+                        sh "scp -i /home/ec2-user/git-project/maven-project/key.pem **/target/*.war ec2-user@${params.stage}:/var/lib/tomcat7/webapps"
                     }
                 }
                 stage ('prod'){
