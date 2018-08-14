@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+          maven 'LocalMAVEN'
+      }
+
     parameters {
         string(name: 'stage', defaultValue: '18.206.157.183', description: 'stage server')
         string(name: 'prod', defaultValue: '18.206.157.183', description: 'prod server')
