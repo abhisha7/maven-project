@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven ''LocalMAVEN'
+        maven 'LocalMAVEN'
     }
     stages {
         stage ('biuld'){
